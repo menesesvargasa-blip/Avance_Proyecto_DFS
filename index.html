@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Contactos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Iconos Lucide para la interfaz -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- 1. PANTALLA DE LOGIN -->
+    <div id="loginSection" class="screen active">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="icon-circle">
+                    <i data-lucide="contact-2"></i>
+                </div>
+                <h2>ContactHub</h2>
+                <p>Ingresa para administrar tu lista de contactos</p>
+            </div>
+
+            <form id="loginForm" class="form-layout">
+                <div class="input-group">
+                    <label for="loginEmail">Correo electrónico</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="mail"></i>
+                        <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" required value="admin@empresa.com">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required value="123456">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <label class="checkbox-label">
+                        <input type="checkbox" checked>
+                        <span>Recordarme</span>
+                    </label>
+                    <a href="#" class="link-text">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Iniciar Sesión</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. PANTALLA DEL DASHBOARD / CONTACTOS -->
+    <div id="dashboardSection" class="screen">
+        <!-- Navegación Superior -->
+        <header class="navbar">
+            <div class="nav-brand">
+                <i data-lucide="contact-2"></i>
+                <span>ContactHub</span>
+            </div>
+            <div class="user-profile">
+                <div class="avatar" id="userAvatar">A</div>
+                <span id="userName">Administrador</span>
+                <button id="logoutBtn" class="btn btn-icon btn-ghost" title="Cerrar sesión">
+                    <i data-lucide="log-out"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Contenido Principal -->
+        <main class="main-container">
+            <!-- Tarjetas de Métricas -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue"><i data-lucide="users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Contactos</h3>
+                        <p id="totalCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-amber"><i data-lucide="star"></i></div>
+                    <div class="stat-info">
+                        <h3>Favoritos</h3>
+                        <p id="favCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-emerald"><i data-lucide="briefcase"></i></div>
+                    <div class="stat-info">
+                        <h3>Trabajo / Clientes</h3>
+                        <p id="workCount">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Barra de Controles y Búsqueda -->
+            <section class="controls-card">
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar por nombre, correo o teléfono...">
+                </div>
+                <div class="filter-actions">
+                    <select id="categoryFilter" class="select-input">
+                        <option value="all">Todas las categorías</option>
+                        <option value="Trabajo">Trabajo</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Familia">Familia</option>
+                        <option value="Cliente">Cliente</option>
+                    </select>
+                    <button id="addContactBtn" class="btn btn-primary">
+                        <i data-lucide="plus"></i>
+                        <span>Nuevo Contacto</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tabla de Contactos -->
+            <section class="table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Contacto</th>
+                                <th>Teléfono</th>
+                                <th>Categoría</th>
+                                <th>Estado</th>
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactsTableBody">
+                            <!-- Los contactos se cargarán dinámicamente con JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Vista Vacía -->
+                <div id="emptyState" class="empty-state hidden">
+                    <i data-lucide="users-round"></i>
+                    <h3>No se encontraron contactos</h3>
+                    <p>Intenta cambiar los términos de búsqueda o agrega un nuevo contacto.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL DE CONTACTO (CREAR / EDITAR) -->
+    <div id="contactModal" class="modal-backdrop">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nuevo Contacto</h3>
+                <button class="btn-close close-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="contactForm" class="modal-body">
+                <input type="hidden" id="contactId">
+                <div class="input-group">
+                    <label for="contactName">Nombre completo *</label>
+                    <input type="text" id="contactName" placeholder="Ej. Ana Martínez" required>
+                </div>
+                <div class="input-group">
+                    <label for="contactEmail">Correo electrónico *</label>
+                    <input type="email" id="contactEmail" placeholder="ana@ejemplo.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="contactPhone">Teléfono *</label>
+                    <input type="tel" id="contactPhone" placeholder="+52 844 123 4567" required>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="contactCategory">Categoría</label>
+                        <select id="contactCategory" class="select-input">
+                            <option value="Trabajo">Trabajo</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Familia">Familia</option>
+                            <option value="Cliente">Cliente</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="contactStatus">Estado</label>
+                        <select id="contactStatus" class="select-input">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Contacto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+    <div id="deleteModal" class="modal-backdrop">
+        <div class="modal-card modal-sm text-center">
+            <div class="icon-warning">
+                <i data-lucide="alert-triangle"></i>
+            </div>
+            <h3>¿Eliminar contacto?</h3>
+            <p>Esta acción no se puede deshacer. Se borrará permanentemente la información del contacto.</p>
+            <div class="modal-footer justify-center">
+                <button id="cancelDeleteBtn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirmDeleteBtn" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIONES TOAST -->
+    <div id="toast" class="toast">
+        <i data-lucide="check-circle" id="toastIcon"></i>
+        <span id="toastMessage">Operación realizada con éxito</span>
+    </div>
+
+    <!-- Cargar icono de Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
