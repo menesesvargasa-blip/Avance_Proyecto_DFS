@@ -26,7 +26,7 @@
                     <label for="loginEmail">Correo electrónico</label>
                     <div class="input-wrapper">
                         <i data-lucide="mail"></i>
-                        <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" required value="admin@empresa.com">
+                        <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" required>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
                     <label for="loginPassword">Contraseña</label>
                     <div class="input-wrapper">
                         <i data-lucide="lock"></i>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required value="123456">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
                     </div>
                 </div>
 
@@ -50,11 +50,65 @@
                     <span>Iniciar Sesión</span>
                     <i data-lucide="arrow-right"></i>
                 </button>
+
+                <div class="text-center" style="margin-top: 15px; font-size: 0.85rem; text-align: center;">
+                    <span>¿No tienes una cuenta? </span>
+                    <a href="#" id="showRegisterLink" class="link-text">Regístrate aquí</a>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- 2. PANTALLA DEL DASHBOARD / CONTACTOS -->
+    <!-- 2. PANTALLA DE REGISTRO -->
+    <div id="registerSection" class="screen">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="icon-circle">
+                    <i data-lucide="user-plus"></i>
+                </div>
+                <h2>Crear Cuenta</h2>
+                <p>Regístrate para empezar a gestionar tus contactos</p>
+            </div>
+
+            <form id="registerForm" class="form-layout">
+                <div class="input-group">
+                    <label for="regName">Nombre completo</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="user"></i>
+                        <input type="text" id="regName" placeholder="Tu Nombre" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regEmail">Correo electrónico</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="mail"></i>
+                        <input type="email" id="regEmail" placeholder="usuario@ejemplo.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regPassword">Contraseña</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password" id="regPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Registrarse</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+                <div class="text-center" style="margin-top: 15px; font-size: 0.85rem; text-align: center;">
+                    <span>¿Ya tienes una cuenta? </span>
+                    <a href="#" id="showLoginLink" class="link-text">Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. PANTALLA DEL DASHBOARD / CONTACTOS -->
     <div id="dashboardSection" class="screen">
         <!-- Navegación Superior -->
         <header class="navbar">
@@ -196,13 +250,13 @@
 
     <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
     <div id="deleteModal" class="modal-backdrop">
-        <div class="modal-card modal-sm text-center">
+        <div class="modal-card modal-sm text-center" style="text-align: center;">
             <div class="icon-warning">
                 <i data-lucide="alert-triangle"></i>
             </div>
             <h3>¿Eliminar contacto?</h3>
             <p>Esta acción no se puede deshacer. Se borrará permanentemente la información del contacto.</p>
-            <div class="modal-footer justify-center">
+            <div class="modal-footer justify-center" style="justify-content: center; margin-top: 15px;">
                 <button id="cancelDeleteBtn" class="btn btn-secondary">Cancelar</button>
                 <button id="confirmDeleteBtn" class="btn btn-danger">Eliminar</button>
             </div>
@@ -215,10 +269,10 @@
         <span id="toastMessage">Operación realizada con éxito</span>
     </div>
 
-    <!-- Cargar icono de Lucide -->
+    <!-- Inicializar iconos y vincular app.js -->
     <script>
         lucide.createIcons();
     </script>
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
